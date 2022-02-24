@@ -7,7 +7,6 @@ const Registration = require('./auth.model');
  */
 
 async function create(req, res, next) {
-    console.log("req", req);
     try {
         const { first_name, email, password } = req.body;
 
@@ -23,18 +22,49 @@ async function create(req, res, next) {
         const savedUserRegistration = await userRegistration.save();
         res.send(200).json(userRegistration)
     } catch (err) {
-        console.log("auth error", err);
-        next(err)
+        next(err);
     }
-}
+};
 
 async function getAllRegistrationData(req, res, next) {
     try {
         const userData = await Registration.find();
         res.status(200).send(userData)
     } catch (err) {
-        console.log("auth err", err);
+        next(err);
+    }
+};
+
+const userLogin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        if (!(email && password)) {
+            res.status(400).send("All input is required");
+        }
+
+        const user = await Registration.findOne({ email });
+
+        if (user && (await compare(password, user.password))) {
+            const token = jwt.sign(
+                { user_id: user._id, email },
+                process.env.TOKEN_KEY,
+                {
+                    expiresIn: "2h",
+                }
+            );
+
+            // save user token
+            user.token = token;
+
+            res.status(200).json(user);
+        }
+
+        res.status(400).send("Invalid Credentials");
+
+    } catch (e) {
+
     }
 }
 
-module.exports = { create, getAllRegistrationData };
+
+module.exports = { create, getAllRegistrationData, userLogin };

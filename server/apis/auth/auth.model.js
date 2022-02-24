@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 
 const RegistrationSchema = new mongoose.Schema({
     first_name: {
-        type: "string",
+        type: String,
         required: true
     },
     email: {
-        type: "string",
+        type: String,
         required: true
     },
     password: {
-        type: "string",
+        type: String,
         required: true
     }
 });
