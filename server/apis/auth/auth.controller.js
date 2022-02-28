@@ -1,4 +1,5 @@
 const Registration = require('./auth.model');
+const jwt = require('jsonwebtoken');
 
 /**
  * 
@@ -6,7 +7,7 @@ const Registration = require('./auth.model');
  * @returns {Registration}
  */
 
-async function create(req, res, next) {
+const create = async (req, res, next) => {
     try {
         const { first_name, email, password } = req.body;
 
@@ -14,19 +15,36 @@ async function create(req, res, next) {
             res.status(400).send("All input is required");
         }
 
+        const oldUser = await Registration.findOne({ email });
+
+        if (oldUser) {
+            return res.status(409).send("User Already Exist. Please Login");
+        }
+
         const userRegistration = new Registration({
             first_name,
             email,
             password
-        })
+        });
+
+
+        const token = jwt.sign(
+            { userRegistration_id: userRegistration._id, email },
+            process.env.TOKEN_KEY,
+            {
+                expiresIn: "2h",
+            }
+        );
+
+        userRegistration._doc.token = token;
         const savedUserRegistration = await userRegistration.save();
-        res.send(200).json(userRegistration)
+        res.status(200).json(savedUserRegistration)
     } catch (err) {
         next(err);
     }
 };
 
-async function getAllRegistrationData(req, res, next) {
+const getAllRegistrationData = async (req, res, next) => {
     try {
         const userData = await Registration.find();
         res.status(200).send(userData)
@@ -62,7 +80,7 @@ const userLogin = async (req, res, next) => {
         res.status(400).send("Invalid Credentials");
 
     } catch (e) {
-
+        next(e)
     }
 }
 
