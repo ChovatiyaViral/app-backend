@@ -61,8 +61,7 @@ const userLogin = async (req, res, next) => {
         }
 
         const user = await Registration.findOne({ email });
-
-        if (user && (await compare(password, user.password))) {
+        if (user && (await password === user.password)) {
             const token = jwt.sign(
                 { user_id: user._id, email },
                 process.env.TOKEN_KEY,
@@ -71,13 +70,13 @@ const userLogin = async (req, res, next) => {
                 }
             );
 
-            // save user token
             user.token = token;
 
             res.status(200).json(user);
+        } else {
+            res.status(400).send("Invalid Credentials");
         }
 
-        res.status(400).send("Invalid Credentials");
 
     } catch (e) {
         next(e)

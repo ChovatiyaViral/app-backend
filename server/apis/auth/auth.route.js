@@ -3,11 +3,12 @@ const RegistrationCtrl = require('./auth.controller')
 
 const router = express.Router();
 
-router.route('/')
+router.route('/login')
+    .post(RegistrationCtrl.userLogin);
+
+router.route('/registration')
     .post(RegistrationCtrl.create)
     .get(RegistrationCtrl.getAllRegistrationData);
 
-router.route('login')
-    .post(RegistrationCtrl.userLogin);
 
 module.exports = router
