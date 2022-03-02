@@ -5,11 +5,11 @@ const cors = require("cors");
 require('dotenv').config();
 
 const routes = require('./index.route');
-app.use(cors());
 // import env config
 
 // express middleware
 app.use(express.json());
+app.use(cors());
 
 // mount all routes on /api path
 app.use('/api', routes);
