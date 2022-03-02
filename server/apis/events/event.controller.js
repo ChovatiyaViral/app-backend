@@ -38,13 +38,16 @@ const deleteEvent = async (req, res, next) => {
 
         const findId = await Events.find({ id });
 
+        const allData = await Events.find({});
+
         if (!findId) {
             res.status(400).send("record not avilable in data");
         }
 
         Events.findByIdAndRemove(id, (err, doc) => {
             if (!err) {
-                res.status(200).json("deleted record successfuly")
+                const filterData = allData.filter((item) => item._id !== id)
+                res.status(200).json(filterData)
             } else {
                 res.status(400).send("record not avilable in data");
             }
