@@ -32,10 +32,7 @@ const create = async (req, res, next) => {
 
         const token = jwt.sign(
             { userRegistration_id: userRegistration._id, email },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: "2h",
-            }
+            process.env.TOKEN_KEY
         );
 
         userRegistration._doc.token = token;
@@ -67,10 +64,7 @@ const userLogin = async (req, res, next) => {
         if (user && (await bcrypt.compare(password, user.password))) {
             const token = jwt.sign(
                 { user_id: user._id, email },
-                process.env.TOKEN_KEY,
-                {
-                    expiresIn: "2h",
-                }
+                process.env.TOKEN_KEY
             );
 
             user.token = token;
