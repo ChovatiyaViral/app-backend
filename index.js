@@ -8,6 +8,7 @@ const routes = require('./index.route');
 // import env config
 
 // express middleware
+app.use('uploads',express.static('uploads'));
 app.use(express.json());
 app.use(cors());
 

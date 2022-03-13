@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const PartyEventsSchema = new mongoose.Schema({
-    poster_img: {
-        type: String,
-        required: true
-    },
+    // poster_img: {
+    //     type: String,
+    //     required: true
+    // },
     event_name: {
         type: String,
         required: true
@@ -14,17 +14,17 @@ const PartyEventsSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     logo: {
         type: String,
         required: true
     },
-    company_logo: {
-        type: String,
-        required: true
-    },
+    // company_logo: {
+    //     type: String,
+    //     required: true
+    // },
     company_name: {
         type: String,
         required: true

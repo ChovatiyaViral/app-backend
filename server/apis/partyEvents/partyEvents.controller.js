@@ -1,20 +1,22 @@
 const PartyEvents = require('./partyEvents.model');
 
 
+
+
 const createPartyEvents = async (req, res, next) => {
     try {
-        const { poster_img, event_name, state, date, logo, company_logo, company_name, sponsor } = req.body;
-        if (!(event_name && state && date && logo && company_logo && company_name && sponsor, poster_img)) {
-            res.status(400).send("enter all details");
-        }
+        console.log("req",req.file);
+        const { event_name, state, date, company_name, sponsor } = req.body;
+        // const { poster_img, event_name, state, date, logo, company_logo, company_name, sponsor } = req.body;
+        // if (!(event_name && state && date && logo && company_logo && company_name && poster_img)) {
+        //     res.status(400).send("enter all details");
+        // }
 
         const partyEvents = new PartyEvents({
-            poster_img,
             event_name,
             state,
             date,
-            logo,
-            company_logo,
+            logo: req.file.path,
             company_name,
             sponsor
         })
