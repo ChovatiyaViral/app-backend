@@ -4,7 +4,7 @@ const auth = require('../../../middleware/checkAuthentication');
 const multer = require('multer');
 
 
-const storageOne = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
     },
@@ -13,7 +13,7 @@ const storageOne = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage: storageOne });
+const upload = multer({ storage: storage });
 
 
 // const storage = multer.diskStorage({
@@ -30,7 +30,7 @@ const upload = multer({ storage: storageOne });
 const router = express.Router();
 
 router.route('/')
-    .post(auth, upload.single('logo'), PartyEventsCtrl.createPartyEvents)
+    .post(auth, upload.fields([{ name: 'logo', maxCount: 1 }, { name: 'company_logo', maxCount: 1 }, { name: 'poster_img', maxCount: 1 }]), PartyEventsCtrl.createPartyEvents)
     .get(auth, PartyEventsCtrl.getAllPartyEventsData)
 
 
