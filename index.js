@@ -3,12 +3,20 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 require('dotenv').config();
+const Path = require('path');
+const processImage = require('express-processimage');
 
 const routes = require('./index.route');
 // import env config
 
+const imagesRoot = Path.join(__dirname, './partEventsImages');
+
+app.use(processImage({
+    root: imagesRoot
+}));
+app.use(express.static(imagesRoot));
+
 // express middleware
-app.use('uploads',express.static('uploads'));
 app.use(express.json());
 app.use(cors());
 

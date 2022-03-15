@@ -1,6 +1,6 @@
 const PartyEvents = require('./partyEvents.model');
-
-
+require('dotenv').config();
+const browseURL = `http://localhost:${process.env.PORT}/`;
 
 
 const createPartyEvents = async (req, res, next) => {
@@ -15,9 +15,9 @@ const createPartyEvents = async (req, res, next) => {
             event_name,
             state,
             date,
-            logo: req.files.logo[0].path,
-            company_logo: req.files.company_logo[0].path,
-            poster_img: req.files.poster_img[0].path,
+            logo: req.files.logo[0].originalname,
+            company_logo: req.files.company_logo[0].originalname,
+            poster_img: req.files.poster_img[0].originalname,
             company_name,
             sponsor
         })
@@ -35,7 +35,17 @@ const createPartyEvents = async (req, res, next) => {
 const getAllPartyEventsData = async (req, res, next) => {
     try {
         const allPartyEventsData = await PartyEvents.find();
-        res.status(200).json(allPartyEventsData)
+
+        const partyData = await allPartyEventsData.map((item) => {
+            return {
+                ...item,
+                logo: browseURL + item.logo,
+                company_logo: browseURL + item.company_logo,
+                poster_img: browseURL + item.poster_img
+            }
+        })
+
+        res.status(200).json(partyData)
     } catch (e) {
         next(e)
     }
