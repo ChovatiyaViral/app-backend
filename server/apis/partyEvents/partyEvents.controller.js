@@ -38,13 +38,12 @@ const getAllPartyEventsData = async (req, res, next) => {
 
         const partyData = await allPartyEventsData.map((item) => {
             return {
-                ...item,
+                ...item._doc,
                 logo: browseURL + item.logo,
                 company_logo: browseURL + item.company_logo,
                 poster_img: browseURL + item.poster_img
             }
         })
-
         res.status(200).json(partyData)
     } catch (e) {
         next(e)
