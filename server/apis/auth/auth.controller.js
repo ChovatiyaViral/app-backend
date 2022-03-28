@@ -56,11 +56,11 @@ const userLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         if (!(email && password)) {
-            res.status(400).send("All input is required");
+            res.status(400).send({ error: "All input is required" });
         }
 
         const user = await Registration.findOne({ email });
-
+        console.log("user", user);
         if (user && (await bcrypt.compare(password, user.password))) {
             const token = jwt.sign(
                 { user_id: user._id, email },
@@ -71,10 +71,8 @@ const userLogin = async (req, res, next) => {
 
             res.status(200).json(user);
         } else {
-            res.status(400).send("Invalid Credentials");
+            res.status(400).send({ error: "Please Enter Valid Credentials" });
         }
-
-
     } catch (e) {
         next(e)
     }

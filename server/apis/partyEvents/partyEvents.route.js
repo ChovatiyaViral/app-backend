@@ -29,6 +29,11 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
+router.route('/party/like')
+    .post(auth, PartyEventsCtrl.partyLike)
+router.route('/party/dis-like')
+    .post(auth, PartyEventsCtrl.partyDisLike)
+
 router.route('/')
     .post(auth, upload.fields([{ name: 'logo', maxCount: 1 }, { name: 'company_logo', maxCount: 1 }, { name: 'poster_img', maxCount: 1 }]), PartyEventsCtrl.createPartyEvents)
     .get(auth, PartyEventsCtrl.getAllPartyEventsData)

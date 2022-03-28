@@ -32,6 +32,9 @@ const PartyEventsSchema = new mongoose.Schema({
     sponsor: {
         type: Object,
         required: false
+    },
+    is_like: {
+        type: Boolean,
     }
 });
 
