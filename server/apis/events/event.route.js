@@ -5,6 +5,9 @@ const auth = require('../../../middleware/checkAuthentication');
 
 const router = express.Router();
 
+router.route('/edit/:id')
+    .put(auth, EventCtrl.editEvent)
+
 router.route('/delete/:id')
     .delete(auth, EventCtrl.deleteEvent)
 

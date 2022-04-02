@@ -58,4 +58,33 @@ const deleteEvent = async (req, res, next) => {
 }
 
 
-module.exports = { getEventData, createEvent, deleteEvent }
+const editEvent = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const { event_name, event_address, description } = req.body;
+
+        const findId = await Events.findOne({ id });
+
+
+        if (!findId) {
+            res.status(400).send("record not avilable in data");
+        }
+
+        const updateEventData = await Events.findByIdAndUpdate({ _id: id }, {
+            event_name,
+            event_address,
+            description
+        }
+        )
+
+        const allData = await Events.find({});
+        res.status(200).json(allData)
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+module.exports = { getEventData, createEvent, deleteEvent, editEvent }

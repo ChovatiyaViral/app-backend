@@ -34,7 +34,6 @@ const create = async (req, res, next) => {
             { userRegistration_id: userRegistration._id, email },
             process.env.TOKEN_KEY
         );
-
         userRegistration._doc.token = token;
         const savedUserRegistration = await userRegistration.save();
         res.status(200).json(savedUserRegistration)
