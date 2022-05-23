@@ -19,7 +19,7 @@ const create = async (req, res, next) => {
         const oldUser = await Registration.findOne({ email });
 
         if (oldUser) {
-            return res.status(409).send("User Already Exist. Please Login");
+            res.status(409).send("User Already Exist. Please Login");
         }
 
         encryptedPassword = await bcrypt.hash(password, 10);
